@@ -31,7 +31,6 @@
                     'Full-Time' => 'Full-Time',
                     'Part-Time' => 'Part-Time',
                     'Contract' => 'Contract',
-                    'Temporary' => 'Temporary',
                     'Internship' => 'Internship',
                     'Volunteer' => 'Volunteer',
                     'On-Call' => 'On-Call',
