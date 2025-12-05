@@ -29,6 +29,7 @@ class JobController extends Controller
     // @route POST /jobs
     public function store(Request $request): RedirectResponse
     {
+
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -51,7 +52,7 @@ class JobController extends Controller
         ]);
 
         // Hardcoded user ID
-        $validatedData['user_id'] = 1;
+        $validatedData['user_id'] = auth()->user()->id;
 
         // Check for image
         if ($request->hasFile('company_logo')) {
