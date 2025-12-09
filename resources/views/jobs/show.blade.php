@@ -7,24 +7,22 @@
                         <i class="fa fa-arrow-alt-circle-left"></i>
                         Back To Listings
                     </a>
-                    @auth
-                        @if (auth()->user()->id === $job->user_id)
-                            <div class="flex space-x-3 ml-4">
-                                <a href="{{ route('jobs.edit', $job->id) }}"
-                                    class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">Edit</a>
-                                <!-- Delete Form -->
-                                <form method="POST" action="{{ route('jobs.destroy', $job->id) }}"
-                                    onsubmit="return confirm('Are you sure that you want to delete this job?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded">
-                                        Delete
-                                    </button>
-                                </form>
-                                <!-- End Delete Form -->
-                            </div>
-                        @endif
-                    @endauth
+                    @can('update', $job)
+                        <div class="flex space-x-3 ml-4">
+                            <a href="{{ route('jobs.edit', $job->id) }}"
+                                class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">Edit</a>
+                            <!-- Delete Form -->
+                            <form method="POST" action="{{ route('jobs.destroy', $job->id) }}"
+                                onsubmit="return confirm('Are you sure that you want to delete this job?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded">
+                                    Delete
+                                </button>
+                            </form>
+                            <!-- End Delete Form -->
+                        </div>
+                    @endcan
                 </div>
                 <div class="p-4">
                     <h2 class="text-xl font-semibold">
@@ -104,9 +102,20 @@
             @if ($job->company_website)
                 <a href="{{ $job->company_website }}" target="_blank" class="text-blue-500">Visit Website</a>
             @endif
-            <a href=""
-                class="mt-10 bg-blue-500 hover:bg-blue-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center"><i
-                    class="fas fa-bookmark mr-3"></i> Bookmark Listing</a>
+            {{-- Bookmark Button --}}
+            @guest
+                <p class="mt-10 bg-gray-200 text-gray-700 font-bold w-full py-2 px-4 rounded-full text-center">
+                    <i class="fas fa-info-circle mr-3"></i> You must be logged in to bookmark a job
+                </p>
+            @else
+                <form method="POST" action="{{ route('bookmarks.store', $job->id) }}" class="mt-10">
+                    @csrf
+                    <button
+                        class="bg-blue-500 hover:bg-blue-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center">
+                        <i class="fas fa-bookmark mr-3"></i> Bookmark listing
+                    </button>
+                </form>
+            @endguest
 
         </aside>
     </div>
